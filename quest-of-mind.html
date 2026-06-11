@@ -1,0 +1,2311 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#1a1428">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Quest of Mind</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=IM+Fell+English:ital@0;1&display=swap');
+
+  :root {
+    --bg-deep: #0f0d1a;
+    --bg-panel: #1a1428;
+    --bg-card: #211c35;
+    --bg-card2: #251e3a;
+    --border-gold: #c9a84c;
+    --border-gold-dim: #7a6230;
+    --gold: #e8c96a;
+    --gold-bright: #f5d97a;
+    --gold-dim: #9a7a3a;
+    --text-main: #e8dfc8;
+    --text-dim: #9a8f78;
+    --text-bright: #f5edd8;
+    --purple: #6b4fa0;
+    --purple-bright: #8b6fc0;
+    --green: #3d8b4e;
+    --green-bright: #52b868;
+    --red: #8b2a2a;
+    --red-bright: #c84040;
+    --blue: #2a5a8b;
+    --blue-bright: #4a8ac8;
+    --amber: #b87820;
+    --xp-color: #a0d870;
+    --hp-color: #e05050;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text-main);
+    font-family: 'IM Fell English', Georgia, serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  #header {
+    background: linear-gradient(180deg, #1a1428 0%, #0f0d1a 100%);
+    border-bottom: 2px solid var(--border-gold-dim);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  #header-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 16px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-shadow: 0 0 20px rgba(200,160,60,0.5);
+  }
+  #header-stats {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .stat-pill {
+    border: 1px solid var(--border-gold-dim);
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--gold);
+    background: rgba(200,160,60,0.08);
+    white-space: nowrap;
+  }
+  #settings-btn {
+    background: none;
+    border: 1px solid var(--border-gold-dim);
+    color: var(--gold-dim);
+    width: 30px;
+    height: 30px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* QUOTE BANNER */
+  #quote-banner {
+    background: linear-gradient(90deg, #1a1428, #211c35, #1a1428);
+    border-bottom: 1px solid var(--border-gold-dim);
+    padding: 8px 16px;
+    text-align: center;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.5px;
+  }
+
+  /* SEASONAL EVENT */
+  #event-banner {
+    background: linear-gradient(90deg, #0a1830, #0d1f42, #0a1830);
+    border-bottom: 1px solid #2a4a80;
+    padding: 6px 16px;
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: #6aadff;
+    letter-spacing: 1px;
+  }
+
+  /* MAIN SCROLL AREA */
+  #main {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* PANEL */
+  .panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-gold-dim);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5), inset 0 1px 0 rgba(200,160,60,0.1);
+  }
+  .panel-header {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border-gold-dim);
+    background: linear-gradient(90deg, rgba(200,160,60,0.08), transparent);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-transform: uppercase;
+  }
+  .panel-body { padding: 14px; }
+
+  /* ACTION WINDOW */
+  #action-panel .panel-header { color: var(--gold-bright); }
+
+  #quest-type-label {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--gold-dim);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+  #skill-select {
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border-gold-dim);
+    color: var(--text-main);
+    padding: 9px 12px;
+    font-family: 'IM Fell English', serif;
+    font-size: 13px;
+    border-radius: 3px;
+    appearance: none;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23c9a84c' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+  }
+  #skill-select:focus { outline: none; border-color: var(--border-gold); }
+
+  /* TIMER */
+  #timer-display {
+    text-align: center;
+    padding: 20px 0 10px;
+  }
+  #timer-digits {
+    font-family: 'Cinzel', serif;
+    font-size: 64px;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 4px;
+    text-shadow: 0 0 30px rgba(200,160,60,0.4);
+    line-height: 1;
+    transition: color 0.3s;
+  }
+  #timer-digits.running { color: var(--gold-bright); text-shadow: 0 0 40px rgba(245,217,122,0.6); }
+  #timer-digits.paused { color: var(--amber); }
+  #timer-status {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--text-dim);
+    margin-top: 6px;
+    text-transform: uppercase;
+  }
+
+  /* DURATION BUTTONS */
+  #duration-btns {
+    display: flex;
+    gap: 6px;
+    margin: 12px 0;
+  }
+  .dur-btn {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border-gold-dim);
+    color: var(--gold-dim);
+    padding: 8px 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  .dur-btn:hover, .dur-btn.active {
+    background: rgba(200,160,60,0.15);
+    border-color: var(--border-gold);
+    color: var(--gold);
+  }
+
+  /* ACTION BUTTONS */
+  #action-btns { display: flex; gap: 8px; margin-bottom: 8px; }
+  .action-btn {
+    flex: 1;
+    padding: 12px;
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.15s;
+    font-weight: 600;
+  }
+  #begin-btn {
+    background: linear-gradient(180deg, #5a8a3a, #3a6020);
+    color: #d0f0a0;
+    border: 1px solid #6aaa48;
+    box-shadow: 0 2px 8px rgba(60,120,30,0.4);
+  }
+  #begin-btn:hover { background: linear-gradient(180deg, #6aaa48, #4a7a2a); }
+  #begin-btn:disabled { opacity: 0.4; cursor: default; }
+  #pause-btn {
+    background: linear-gradient(180deg, #7a2a2a, #5a1a1a);
+    color: #f0a0a0;
+    border: 1px solid #aa4040;
+  }
+  #pause-btn:hover { background: linear-gradient(180deg, #9a3a3a, #7a2a2a); }
+  #pause-btn.resume {
+    background: linear-gradient(180deg, #3a5a8a, #2a3a6a);
+    color: #a0c0f0;
+    border: 1px solid #4a7aaa;
+  }
+
+  #dungeon-btn {
+    width: 100%;
+    padding: 12px;
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    background: linear-gradient(180deg, #4a2a7a, #2a1a5a);
+    color: #c0a0f0;
+    border: 1px solid #7a4aaa;
+    border-radius: 3px;
+    cursor: pointer;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    transition: all 0.2s;
+  }
+  #dungeon-btn:hover { background: linear-gradient(180deg, #5a3a8a, #3a2a6a); }
+
+  /* WILDERNESS */
+  #wilderness-section {
+    border-top: 1px solid var(--border-gold-dim);
+    padding-top: 12px;
+    margin-top: 4px;
+  }
+  #wilderness-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+  #wilderness-title {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--red-bright);
+    text-transform: uppercase;
+  }
+  .toggle-switch {
+    position: relative;
+    width: 40px;
+    height: 22px;
+  }
+  .toggle-switch input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border-gold-dim);
+    border-radius: 11px;
+    transition: 0.3s;
+  }
+  .toggle-slider:before {
+    content: '';
+    position: absolute;
+    width: 16px; height: 16px;
+    left: 2px; top: 2px;
+    background: var(--gold-dim);
+    border-radius: 50%;
+    transition: 0.3s;
+  }
+  input:checked + .toggle-slider { background: rgba(180,40,40,0.3); border-color: var(--red-bright); }
+  input:checked + .toggle-slider:before { transform: translateX(18px); background: var(--red-bright); }
+  #wilderness-desc { font-size: 11px; color: var(--text-dim); font-style: italic; }
+
+  /* SESSION STATS */
+  #session-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+    margin-top: 12px;
+    border-top: 1px solid var(--border-gold-dim);
+    padding-top: 12px;
+  }
+  .sess-stat {
+    text-align: center;
+    background: var(--bg-card);
+    border: 1px solid var(--border-gold-dim);
+    padding: 8px 4px;
+    border-radius: 3px;
+  }
+  .sess-stat-label {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .sess-stat-value {
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* SESSION NOTES */
+  #notes-area {
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border-gold-dim);
+    color: var(--text-main);
+    padding: 8px 10px;
+    font-family: 'IM Fell English', serif;
+    font-size: 12px;
+    border-radius: 3px;
+    resize: none;
+    height: 60px;
+    margin-top: 10px;
+  }
+  #notes-area:focus { outline: none; border-color: var(--border-gold); }
+  #notes-count { font-size: 10px; color: var(--text-dim); text-align: right; margin-top: 2px; }
+
+  /* EVENT ZONE */
+  #event-zone {
+    min-height: 36px;
+    margin: 8px 0;
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: var(--gold-bright);
+    padding: 8px;
+    border-radius: 3px;
+    transition: all 0.3s;
+  }
+  #event-zone.active {
+    background: rgba(200,160,60,0.15);
+    border: 1px solid var(--border-gold);
+    animation: pulse-glow 2s infinite;
+  }
+  @keyframes pulse-glow {
+    0%,100% { box-shadow: 0 0 8px rgba(200,160,60,0.3); }
+    50% { box-shadow: 0 0 20px rgba(200,160,60,0.6); }
+  }
+
+  /* CHARACTER SHEET */
+  #char-avatar {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  #avatar-img {
+    width: 64px; height: 64px;
+    background: var(--bg-card);
+    border: 2px solid var(--border-gold-dim);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    flex-shrink: 0;
+  }
+  #char-info { flex: 1; }
+  #char-name {
+    font-family: 'Cinzel', serif;
+    font-size: 15px;
+    color: var(--text-bright);
+    font-weight: 600;
+  }
+  #char-level { font-size: 12px; color: var(--gold-dim); margin: 2px 0; }
+  #char-class { font-family: 'Cinzel', serif; font-size: 11px; color: var(--purple-bright); letter-spacing: 1px; }
+  #char-title { font-style: italic; font-size: 11px; color: var(--text-dim); }
+  #char-streak { font-size: 12px; color: var(--text-main); margin-top: 4px; }
+
+  /* XP BAR */
+  .xp-bar-container { margin: 8px 0; }
+  .xp-bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    margin-bottom: 3px;
+    text-transform: uppercase;
+  }
+  .xp-bar-track {
+    height: 8px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-gold-dim);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .xp-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4a8a20, #80cc40);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+  }
+
+  /* SKILLS LIST */
+  .skills-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+  }
+  .small-btn {
+    background: rgba(200,160,60,0.1);
+    border: 1px solid var(--border-gold-dim);
+    color: var(--gold);
+    padding: 4px 10px;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 1px;
+    border-radius: 3px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+  .small-btn:hover { background: rgba(200,160,60,0.2); border-color: var(--border-gold); }
+
+  .skill-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border-gold-dim);
+    border-radius: 3px;
+    padding: 8px 10px;
+    margin-bottom: 6px;
+  }
+  .skill-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .skill-item-name { font-family: 'Cinzel', serif; font-size: 12px; color: var(--text-bright); }
+  .skill-item-level { font-family: 'Cinzel', serif; font-size: 10px; color: var(--gold-dim); }
+  .skill-item-xp-track {
+    height: 5px;
+    background: rgba(0,0,0,0.4);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .skill-item-xp-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3a7a20, #70bc38);
+    border-radius: 3px;
+    transition: width 0.5s;
+  }
+  #no-skills-msg {
+    text-align: center;
+    color: var(--text-dim);
+    font-style: italic;
+    font-size: 12px;
+    padding: 16px 0;
+  }
+
+  /* BUFFS & INVENTORY */
+  .buff-item {
+    display: inline-block;
+    background: rgba(60,140,60,0.15);
+    border: 1px solid var(--green);
+    color: var(--green-bright);
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  #inv-empty { color: var(--text-dim); font-style: italic; font-size: 12px; }
+
+  /* BOTTOM TABS */
+  #tab-bar {
+    position: sticky;
+    bottom: 0;
+    background: var(--bg-panel);
+    border-top: 2px solid var(--border-gold-dim);
+    z-index: 50;
+  }
+  #tab-scroll {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 0 4px;
+  }
+  #tab-scroll::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex-shrink: 0;
+    padding: 10px 14px;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+  .tab-btn:hover { color: var(--gold); }
+  .tab-btn.active { color: var(--gold-bright); border-bottom-color: var(--border-gold); }
+
+  /* TAB CONTENT */
+  #tab-content {
+    background: var(--bg-panel);
+    border-top: 1px solid var(--border-gold-dim);
+    min-height: 200px;
+    max-height: 50vh;
+    overflow-y: auto;
+  }
+
+  /* LOG */
+  #log-content { padding: 12px; }
+  .log-entry {
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(200,160,60,0.08);
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .log-entry .log-time { color: var(--gold-dim); font-family: 'Cinzel', serif; font-size: 10px; margin-right: 8px; }
+  .log-entry.highlight { color: var(--text-main); }
+  #log-welcome {
+    text-align: center;
+    padding: 20px;
+    border-top: 1px solid var(--border-gold-dim);
+    margin-top: 10px;
+  }
+  #log-welcome h2 {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 18px;
+    color: var(--gold);
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+  }
+  #log-welcome p { font-size: 12px; color: var(--text-dim); line-height: 1.8; }
+
+  /* HISTORY */
+  .history-entry {
+    border: 1px solid var(--border-gold-dim);
+    border-radius: 3px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    background: var(--bg-card);
+  }
+  .history-entry-header { display: flex; justify-content: space-between; margin-bottom: 4px; }
+  .history-entry-skill { font-family: 'Cinzel', serif; font-size: 12px; color: var(--gold); }
+  .history-entry-date { font-size: 10px; color: var(--text-dim); }
+  .history-entry-stats { display: flex; gap: 12px; font-size: 11px; color: var(--text-dim); }
+  .history-entry-note { font-style: italic; font-size: 11px; color: var(--text-dim); margin-top: 4px; border-top: 1px solid rgba(200,160,60,0.1); padding-top: 4px; }
+
+  /* STATS */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 12px;
+  }
+  .stat-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border-gold-dim);
+    border-radius: 3px;
+    padding: 10px;
+    text-align: center;
+  }
+  .stat-box-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 1px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px; }
+  .stat-box-value { font-family: 'Cinzel', serif; font-size: 22px; color: var(--gold); font-weight: 600; }
+
+  /* HEATMAP */
+  #heatmap-container { padding: 12px; }
+  .heatmap-month-label { font-family: 'Cinzel', serif; font-size: 10px; color: var(--gold-dim); letter-spacing: 1px; margin-bottom: 6px; text-transform: uppercase; }
+  .heatmap-grid { display: flex; flex-wrap: wrap; gap: 3px; margin-bottom: 14px; }
+  .heatmap-cell {
+    width: 16px; height: 16px;
+    border-radius: 2px;
+    background: var(--bg-card);
+    border: 1px solid rgba(200,160,60,0.1);
+  }
+  .heatmap-cell.lvl1 { background: #2a4a1a; border-color: #3a6a28; }
+  .heatmap-cell.lvl2 { background: #3a6a20; border-color: #5a9a38; }
+  .heatmap-cell.lvl3 { background: #5a9a28; border-color: #80cc50; }
+  .heatmap-cell.lvl4 { background: #80cc40; border-color: #a0ee60; }
+
+  /* ACHIEVEMENTS */
+  .achievement-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(200,160,60,0.08);
+  }
+  .achievement-icon { font-size: 24px; flex-shrink: 0; }
+  .achievement-info {}
+  .achievement-name { font-family: 'Cinzel', serif; font-size: 12px; color: var(--text-bright); }
+  .achievement-desc { font-size: 11px; color: var(--text-dim); }
+  .achievement-item.locked { opacity: 0.4; }
+
+  /* SHOP */
+  .shop-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(200,160,60,0.08);
+  }
+  .shop-item-info { flex: 1; }
+  .shop-item-name { font-family: 'Cinzel', serif; font-size: 12px; color: var(--text-bright); }
+  .shop-item-desc { font-size: 11px; color: var(--text-dim); }
+  .shop-buy-btn {
+    background: rgba(200,160,60,0.15);
+    border: 1px solid var(--border-gold-dim);
+    color: var(--gold);
+    padding: 5px 12px;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    margin-left: 10px;
+    transition: all 0.2s;
+  }
+  .shop-buy-btn:hover { background: rgba(200,160,60,0.25); border-color: var(--border-gold); }
+  .shop-buy-btn:disabled { opacity: 0.4; cursor: default; }
+
+  /* QUESTS */
+  .quest-item {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(200,160,60,0.08);
+  }
+  .quest-item-name { font-family: 'Cinzel', serif; font-size: 12px; color: var(--gold); margin-bottom: 3px; }
+  .quest-item-desc { font-size: 11px; color: var(--text-dim); margin-bottom: 6px; }
+  .quest-progress-track { height: 6px; background: var(--bg-card); border-radius: 3px; overflow: hidden; }
+  .quest-progress-fill { height: 100%; background: linear-gradient(90deg, #4a6a20, #80aa40); border-radius: 3px; transition: width 0.5s; }
+  .quest-progress-label { font-size: 10px; color: var(--text-dim); margin-top: 2px; text-align: right; }
+
+  /* MODALS */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .modal {
+    background: var(--bg-panel);
+    border: 2px solid var(--border-gold-dim);
+    border-radius: 6px;
+    width: 100%;
+    max-width: 480px;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.8);
+  }
+  .modal-header {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border-gold-dim);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-transform: uppercase;
+  }
+  .modal-body { padding: 16px; }
+  .modal-close {
+    background: none;
+    border: 1px solid var(--border-gold-dim);
+    color: var(--gold-dim);
+    padding: 4px 10px;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 1px;
+    border-radius: 3px;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+  .modal-close:hover { border-color: var(--border-gold); color: var(--gold); }
+
+  /* SKILL MANAGE MODAL */
+  .input-label { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 1px; color: var(--gold-dim); text-transform: uppercase; margin-bottom: 5px; display: block; }
+  .text-input {
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border-gold-dim);
+    color: var(--text-main);
+    padding: 8px 10px;
+    font-family: 'IM Fell English', serif;
+    font-size: 13px;
+    border-radius: 3px;
+    margin-bottom: 12px;
+  }
+  .text-input:focus { outline: none; border-color: var(--border-gold); }
+  .primary-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(180deg, #5a7a3a, #3a5a20);
+    border: 1px solid #7aaa4a;
+    color: #d0f0a0;
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    border-radius: 3px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: all 0.2s;
+    margin-top: 4px;
+  }
+  .primary-btn:hover { background: linear-gradient(180deg, #6a9a48, #4a7a28); }
+  .danger-btn {
+    background: linear-gradient(180deg, #7a2a2a, #5a1a1a);
+    border-color: #aa4040;
+    color: #f0a0a0;
+  }
+  .danger-btn:hover { background: linear-gradient(180deg, #9a3a3a, #7a2a2a); }
+
+  .existing-skill-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(200,160,60,0.1);
+  }
+  .existing-skill-name { font-family: 'Cinzel', serif; font-size: 12px; color: var(--text-bright); }
+  .delete-skill-btn {
+    background: none;
+    border: 1px solid var(--red);
+    color: var(--red-bright);
+    padding: 3px 8px;
+    font-size: 11px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .delete-skill-btn:hover { background: rgba(180,40,40,0.2); }
+
+  /* REWARD MODAL */
+  #reward-modal .modal-body { text-align: center; }
+  #reward-icon { font-size: 56px; margin-bottom: 12px; }
+  #reward-title { font-family: 'Cinzel Decorative', serif; font-size: 20px; color: var(--gold); margin-bottom: 8px; }
+  #reward-sub { font-size: 13px; color: var(--text-dim); margin-bottom: 16px; font-style: italic; }
+  #reward-items { margin: 16px 0; }
+  .reward-line {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    color: var(--gold-bright);
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+  }
+
+  /* XP FLOAT */
+  .xp-float {
+    position: fixed;
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--xp-color);
+    text-shadow: 0 0 10px rgba(160,220,120,0.8);
+    pointer-events: none;
+    z-index: 999;
+    animation: float-up 1.5s ease-out forwards;
+  }
+  @keyframes float-up {
+    0% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-80px) scale(1.3); }
+  }
+
+  /* DEATH SCREEN */
+  #death-screen {
+    position: fixed;
+    inset: 0;
+    background: rgba(60,0,0,0.95);
+    z-index: 300;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+  }
+  #death-skull { font-size: 80px; margin-bottom: 16px; animation: shake 0.5s; }
+  @keyframes shake {
+    0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)}
+  }
+  #death-title { font-family: 'Cinzel Decorative', serif; font-size: 28px; color: var(--red-bright); margin-bottom: 8px; }
+  #death-sub { font-size: 14px; color: var(--text-dim); margin-bottom: 24px; }
+  #respawn-btn {
+    padding: 14px 40px;
+    background: linear-gradient(180deg, #7a2a2a, #5a1a1a);
+    border: 2px solid var(--red-bright);
+    color: #f0a0a0;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    letter-spacing: 3px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  /* GRACE PERIOD */
+  #grace-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(100,0,0,0.7);
+    z-index: 290;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  #grace-count { font-family: 'Cinzel Decorative', serif; font-size: 72px; color: var(--red-bright); text-shadow: 0 0 30px red; }
+  #grace-text { font-family: 'Cinzel', serif; font-size: 16px; color: #f0a0a0; letter-spacing: 2px; text-transform: uppercase; }
+
+  /* SETTINGS */
+  .settings-section { margin-bottom: 18px; }
+  .settings-section-title { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 2px; color: var(--gold-dim); text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid var(--border-gold-dim); padding-bottom: 5px; }
+  .settings-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .settings-label { font-size: 13px; color: var(--text-main); }
+
+  /* CLASS SELECTOR */
+  .class-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .class-option {
+    background: var(--bg-card);
+    border: 2px solid var(--border-gold-dim);
+    border-radius: 4px;
+    padding: 12px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .class-option:hover { border-color: var(--border-gold); background: rgba(200,160,60,0.1); }
+  .class-option.selected { border-color: var(--border-gold); background: rgba(200,160,60,0.15); }
+  .class-option-icon { font-size: 28px; margin-bottom: 6px; }
+  .class-option-name { font-family: 'Cinzel', serif; font-size: 11px; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; }
+  .class-option-bonus { font-size: 10px; color: var(--text-dim); margin-top: 3px; }
+
+  /* DUNGEON */
+  #dungeon-info { padding: 14px; }
+  .dungeon-floor {
+    background: var(--bg-card);
+    border: 1px solid var(--border-gold-dim);
+    border-radius: 3px;
+    padding: 12px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .dungeon-floor.current { border-color: var(--border-gold); background: rgba(200,160,60,0.1); }
+  .dungeon-floor.locked { opacity: 0.4; }
+  .floor-info {}
+  .floor-name { font-family: 'Cinzel', serif; font-size: 12px; color: var(--text-bright); }
+  .floor-desc { font-size: 11px; color: var(--text-dim); }
+  .floor-reward { font-family: 'Cinzel', serif; font-size: 11px; color: var(--gold-dim); }
+
+  /* RESPONSIVE HELPER */
+  @media (min-width: 500px) {
+    #timer-digits { font-size: 80px; }
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg-deep); }
+  ::-webkit-scrollbar-thumb { background: var(--border-gold-dim); border-radius: 2px; }
+
+  .hidden { display: none !important; }
+
+  /* CUSTOM DURATION INPUT */
+  #custom-input-row { display: flex; gap: 8px; margin-top: 6px; }
+  #custom-min-input {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border-gold-dim);
+    color: var(--gold);
+    padding: 8px 10px;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    border-radius: 3px;
+    text-align: center;
+  }
+  #custom-min-input:focus { outline: none; border-color: var(--border-gold); }
+  #set-custom-btn {
+    padding: 8px 16px;
+    background: rgba(200,160,60,0.15);
+    border: 1px solid var(--border-gold-dim);
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    border-radius: 3px;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div id="header">
+  <div id="header-title">⚔ QUEST OF MIND</div>
+  <div id="header-stats">
+    <div class="stat-pill" id="gp-pill">💎 0 GP</div>
+    <div class="stat-pill" id="time-pill">🌙 NIGHT</div>
+    <button id="settings-btn" onclick="openSettings()">⚙</button>
+  </div>
+</div>
+
+<!-- QUOTE BANNER -->
+<div id="quote-banner" id="quote-text">"The unexamined life is not worth living." — Socrates</div>
+
+<!-- EVENT BANNER -->
+<div id="event-banner" id="event-banner-text">
+  💎 BANKER'S HOUR — Daily login reward doubled 💎
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- ACTION WINDOW -->
+  <div class="panel" id="action-panel">
+    <div class="panel-header">
+      ✕ Action Window ✕
+      <button class="small-btn" style="font-size:10px" onclick="showHelp()">?</button>
+    </div>
+    <div class="panel-body">
+
+      <!-- Quest Type -->
+      <div id="quest-type-label">Quest Type</div>
+      <select id="skill-select">
+        <option value="">— Add a Skill First —</option>
+      </select>
+
+      <!-- Event Zone -->
+      <div id="event-zone"></div>
+
+      <!-- Timer -->
+      <div id="timer-display">
+        <div id="timer-digits">25:00</div>
+        <div id="timer-status">Ready to Begin</div>
+      </div>
+
+      <!-- Duration Buttons -->
+      <div id="duration-btns">
+        <button class="dur-btn active" onclick="setDuration(25, this)">25 MIN</button>
+        <button class="dur-btn" onclick="setDuration(50, this)">50 MIN</button>
+        <button class="dur-btn" onclick="setDuration(90, this)">90 MIN</button>
+        <button class="dur-btn" onclick="toggleCustom(this)">CUSTOM</button>
+      </div>
+      <div id="custom-input-row" class="hidden">
+        <input type="number" id="custom-min-input" placeholder="Min" min="1" max="480">
+        <button id="set-custom-btn" onclick="applyCustomDuration()">SET</button>
+      </div>
+
+      <!-- Action Buttons -->
+      <div id="action-btns">
+        <button class="action-btn" id="begin-btn" onclick="beginQuest()">▶ Begin Quest</button>
+        <button class="action-btn" id="pause-btn" onclick="togglePause()">⏸ Pause</button>
+      </div>
+
+      <button id="dungeon-btn" onclick="openDungeon()">✕ Enter Dungeon</button>
+
+      <!-- Wilderness -->
+      <div id="wilderness-section">
+        <div id="wilderness-header">
+          <span id="wilderness-title">💀 The Wilderness</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="wilderness-toggle">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div id="wilderness-desc">Stakes XP & Gold. Tab-switch = DEATH. Double rewards on survival.</div>
+      </div>
+
+      <!-- Session Stats -->
+      <div id="session-stats">
+        <div class="sess-stat">
+          <div class="sess-stat-label">Time Today</div>
+          <div class="sess-stat-value" id="time-today">0m</div>
+        </div>
+        <div class="sess-stat">
+          <div class="sess-stat-label">XP Today</div>
+          <div class="sess-stat-value" id="xp-today">0</div>
+        </div>
+        <div class="sess-stat">
+          <div class="sess-stat-label">Day Streak</div>
+          <div class="sess-stat-value" id="streak-display">0</div>
+        </div>
+      </div>
+
+      <!-- Session Notes -->
+      <textarea id="notes-area" placeholder="Session notes... (max 200 chars)" maxlength="200"></textarea>
+      <div id="notes-count">0/200</div>
+
+    </div>
+  </div>
+
+  <!-- CHARACTER SHEET -->
+  <div class="panel">
+    <div class="panel-header">📜 Character Sheet 📜</div>
+    <div class="panel-body">
+      <div id="char-avatar">
+        <div id="avatar-img">🧙</div>
+        <div id="char-info">
+          <div id="char-name">Adventurer</div>
+          <div id="char-level">Combat Level: <span id="cl-val">1</span></div>
+          <div id="char-class">🧙 Mage</div>
+          <div id="char-title" style="font-style:italic;font-size:11px;color:var(--text-dim)">The Novice</div>
+          <div id="char-streak">🔥 <span id="streak-val">0</span> day streak · Best: <span id="best-streak-val">0</span></div>
+          <div style="font-size:11px;color:var(--text-dim)">Study Time: <span id="total-time-val">0h 0m</span></div>
+        </div>
+      </div>
+
+      <!-- Combat Level XP Bar -->
+      <div class="xp-bar-container">
+        <div class="xp-bar-label">
+          <span>COMBAT XP</span>
+          <span id="cl-xp-label">0 / 100</span>
+        </div>
+        <div class="xp-bar-track">
+          <div class="xp-bar-fill" id="cl-xp-bar" style="width:0%"></div>
+        </div>
+      </div>
+
+      <!-- SKILLS -->
+      <div style="margin-top:14px">
+        <div class="skills-section-header">
+          <span class="section-title">Skills</span>
+          <button class="small-btn" onclick="openManageSkills()">+ Manage</button>
+        </div>
+        <div id="skills-list">
+          <div id="no-skills-msg">No skills yet.<br>Click + Manage to add your first skill.</div>
+        </div>
+      </div>
+
+      <!-- ACTIVE BUFFS -->
+      <div style="margin-top:14px">
+        <div class="section-title" style="margin-bottom:8px">Active Buffs</div>
+        <div id="buffs-container">
+          <div class="buff-item" id="daily-buff">📜 Double Loot (1 sess)</div>
+        </div>
+      </div>
+
+      <!-- INVENTORY -->
+      <div style="margin-top:14px">
+        <div class="section-title" style="margin-bottom:8px">Inventory</div>
+        <div id="inventory-container">
+          <div id="inv-empty">Empty</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- TAB BAR -->
+<div id="tab-bar">
+  <div id="tab-scroll">
+    <button class="tab-btn active" onclick="switchTab('log', this)">📜 Log</button>
+    <button class="tab-btn" onclick="switchTab('quests', this)">✕ Quests</button>
+    <button class="tab-btn" onclick="switchTab('heatmap', this)">📅 Heatmap</button>
+    <button class="tab-btn" onclick="switchTab('stats', this)">📊 Stats</button>
+    <button class="tab-btn" onclick="switchTab('achievements', this)">🏆 Achievements</button>
+    <button class="tab-btn" onclick="switchTab('history', this)">📋 History</button>
+    <button class="tab-btn" onclick="switchTab('shop', this)">🛒 Shop</button>
+    <button class="tab-btn" onclick="switchTab('guide', this)">📖 Guide</button>
+  </div>
+  <div id="tab-content">
+    <!-- Filled dynamically -->
+  </div>
+</div>
+
+<!-- MODALS -->
+
+<!-- Manage Skills Modal -->
+<div class="modal-overlay hidden" id="skills-modal">
+  <div class="modal">
+    <div class="modal-header">
+      Manage Skills
+      <button class="modal-close" onclick="closeModal('skills-modal')">✕ Close</button>
+    </div>
+    <div class="modal-body">
+      <div id="existing-skills-list"></div>
+      <div style="margin-top:16px; border-top:1px solid var(--border-gold-dim); padding-top:14px">
+        <label class="input-label">New Skill Name</label>
+        <input class="text-input" type="text" id="new-skill-name" placeholder="e.g. Direito Civil" maxlength="40">
+        <button class="primary-btn" onclick="addSkill()">+ Add Skill</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reward Modal -->
+<div class="modal-overlay hidden" id="reward-modal">
+  <div class="modal">
+    <div class="modal-header">
+      ✕ Quest Complete ✕
+      <button class="modal-close" onclick="closeModal('reward-modal')">✕ Close</button>
+    </div>
+    <div class="modal-body" style="text-align:center">
+      <div id="reward-icon">⚔️</div>
+      <div id="reward-title">Victory!</div>
+      <div id="reward-sub"></div>
+      <div id="reward-items"></div>
+      <button class="primary-btn" onclick="closeModal('reward-modal')" style="margin-top:16px">Continue →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Settings Modal -->
+<div class="modal-overlay hidden" id="settings-modal">
+  <div class="modal">
+    <div class="modal-header">
+      ⚙ Settings
+      <button class="modal-close" onclick="closeModal('settings-modal')">✕ Close</button>
+    </div>
+    <div class="modal-body">
+      <div class="settings-section">
+        <div class="settings-section-title">Character</div>
+        <label class="input-label">Character Name</label>
+        <input class="text-input" type="text" id="char-name-input" placeholder="Adventurer" maxlength="30">
+        <label class="input-label">Choose Class</label>
+        <div class="class-grid" id="class-grid">
+          <div class="class-option selected" data-class="Mage" onclick="selectClass(this)">
+            <div class="class-option-icon">🧙</div>
+            <div class="class-option-name">Mage</div>
+            <div class="class-option-bonus">+20% XP</div>
+          </div>
+          <div class="class-option" data-class="Warrior" onclick="selectClass(this)">
+            <div class="class-option-icon">⚔️</div>
+            <div class="class-option-name">Warrior</div>
+            <div class="class-option-bonus">+20% Gold</div>
+          </div>
+          <div class="class-option" data-class="Ranger" onclick="selectClass(this)">
+            <div class="class-option-icon">🏹</div>
+            <div class="class-option-name">Ranger</div>
+            <div class="class-option-bonus">+15% Streak</div>
+          </div>
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-section-title">Preferences</div>
+        <div class="settings-row">
+          <span class="settings-label">Sound Notifications</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="sound-toggle" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="settings-row">
+          <span class="settings-label">Auto-start Break Timer</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="break-toggle">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-section-title">Data</div>
+        <button class="primary-btn danger-btn" onclick="resetData()">⚠ Reset All Data</button>
+      </div>
+      <button class="primary-btn" onclick="saveSettings()">Save Settings</button>
+    </div>
+  </div>
+</div>
+
+<!-- Dungeon Modal -->
+<div class="modal-overlay hidden" id="dungeon-modal">
+  <div class="modal">
+    <div class="modal-header">
+      ✕ The Dungeon
+      <button class="modal-close" onclick="closeModal('dungeon-modal')">✕ Close</button>
+    </div>
+    <div id="dungeon-info">
+      <!-- filled dynamically -->
+    </div>
+  </div>
+</div>
+
+<!-- Death Screen -->
+<div id="death-screen" class="hidden">
+  <div id="death-skull">💀</div>
+  <div id="death-title">YOU DIED</div>
+  <div id="death-sub">You switched away. All session XP and Gold lost.</div>
+  <button id="respawn-btn" onclick="respawn()">RESPAWN</button>
+</div>
+
+<!-- Grace Period -->
+<div id="grace-overlay" class="hidden">
+  <div id="grace-count">3</div>
+  <div id="grace-text">Return now or die!</div>
+</div>
+
+<script>
+// =====================
+// STATE
+// =====================
+const QUOTES = [
+  ['"The unexamined life is not worth living."', '— Socrates'],
+  ['"He who has a why to live can bear almost any how."', '— Nietzsche'],
+  ['"Discipline is the bridge between goals and accomplishment."', '— Jim Rohn'],
+  ['"Man is condemned to be free."', '— Sartre'],
+  ['"You have power over your mind, not outside events."', '— Marcus Aurelius'],
+  ['"In the middle of difficulty lies opportunity."', '— Einstein'],
+  ['"The obstacle is the way."', '— Ryan Holiday'],
+  ['"The only way to do great work is to love what you do."', '— Steve Jobs'],
+  ['"Absorb what is useful, discard what is not."', '— Bruce Lee'],
+  ['"First say to yourself what you would be; then do what you have to do."', '— Epictetus'],
+];
+
+const LOOT_TABLE = [
+  { name: 'Scroll of Focus', emoji: '📜', rarity: 'common', effect: '+10% XP next session' },
+  { name: "Scholar's Quill", emoji: '🪶', rarity: 'uncommon', effect: '+15% XP for 2 sessions' },
+  { name: 'Iron Tome', emoji: '📚', rarity: 'common', effect: 'Double Loot (1 session)' },
+  { name: 'Crystal of Clarity', emoji: '💎', rarity: 'rare', effect: '+25% XP for 3 sessions' },
+  { name: 'Ancient Medallion', emoji: '🏅', rarity: 'rare', effect: 'Prestige XP bonus' },
+  { name: 'Potion of Wisdom', emoji: '⚗️', rarity: 'common', effect: '+50 bonus XP' },
+  { name: 'Elixir of Endurance', emoji: '🧪', rarity: 'uncommon', effect: 'Streak protection' },
+  { name: 'Rune of Power', emoji: '🔮', rarity: 'rare', effect: '+30% Gold earnings' },
+];
+
+const SHOP_ITEMS = [
+  { name: 'Scroll of Double Loot', emoji: '📜', desc: 'Double loot on next session', price: 200, buff: 'DoubleLoot' },
+  { name: 'Elixir of Focus', emoji: '⚗️', desc: '+20% XP on next session', price: 150, buff: 'FocusElixir' },
+  { name: 'Crystal of Clarity', emoji: '💎', desc: '+50 bonus XP next 2 sessions', price: 400, buff: 'CrystalClarity' },
+  { name: 'Rune of Fortune', emoji: '🔮', desc: 'Double Gold next session', price: 300, buff: 'RuneFortune' },
+  { name: 'Shield of Sanctuary', emoji: '🛡️', desc: 'Protect streak once (1 skip)', price: 500, buff: 'StreakShield' },
+];
+
+const ACHIEVEMENTS = [
+  { id: 'first_quest', name: 'First Quest', desc: 'Complete your first study session', icon: '⚔️', condition: s => s.totalSessions >= 1 },
+  { id: 'streak_3', name: 'Consistent', desc: 'Reach a 3-day streak', icon: '🔥', condition: s => s.bestStreak >= 3 },
+  { id: 'streak_7', name: 'Dedicated', desc: 'Reach a 7-day streak', icon: '🏆', condition: s => s.bestStreak >= 7 },
+  { id: 'xp_1000', name: 'Scholar', desc: 'Earn 1000 total XP', icon: '📚', condition: s => s.totalXP >= 1000 },
+  { id: 'xp_10000', name: 'Sage', desc: 'Earn 10,000 total XP', icon: '🧙', condition: s => s.totalXP >= 10000 },
+  { id: 'gp_1000', name: 'Wealthy', desc: 'Accumulate 1000 GP', icon: '💰', condition: s => s.totalGoldEarned >= 1000 },
+  { id: 'sessions_10', name: 'Veteran', desc: 'Complete 10 sessions', icon: '🎖️', condition: s => s.totalSessions >= 10 },
+  { id: 'sessions_50', name: 'Champion', desc: 'Complete 50 sessions', icon: '👑', condition: s => s.totalSessions >= 50 },
+  { id: 'survive_wilderness', name: 'Survivor', desc: 'Survive a Wilderness session', icon: '💀', condition: s => s.wildernessWins >= 1 },
+  { id: 'combat_10', name: 'Level Up!', desc: 'Reach Combat Level 10', icon: '⬆️', condition: s => s.combatLevel >= 10 },
+];
+
+const DUNGEON_FLOORS = [
+  { name: 'Floor 1: The Antechamber', desc: 'Complete 2 sessions to advance', reward: '150 GP + Common Loot', required: 2 },
+  { name: 'Floor 2: The Catacombs', desc: 'Complete 5 sessions to advance', reward: '300 GP + Uncommon Loot', required: 5 },
+  { name: 'Floor 3: The Dragon\'s Lair', desc: 'Complete 10 sessions to advance', reward: '600 GP + Rare Loot', required: 10 },
+  { name: 'Floor 4: The Ancient Vault', desc: 'Complete 20 sessions to advance', reward: '1200 GP + Epic Loot', required: 20 },
+];
+
+let state = {
+  gold: 0,
+  totalXP: 0,
+  totalGoldEarned: 0,
+  totalSessions: 0,
+  totalMinutes: 0,
+  combatLevel: 1,
+  combatXP: 0,
+  skills: [],
+  selectedSkillIndex: -1,
+  history: [],
+  inventory: [],
+  activeBuff: null,
+  streak: 0,
+  bestStreak: 0,
+  lastStudyDate: null,
+  wildernessWins: 0,
+  combo: 0,
+  dungeonProgress: 0,
+  achievements: [],
+  charName: 'Adventurer',
+  charClass: 'Mage',
+  todayXP: 0,
+  todayMinutes: 0,
+  todayDate: '',
+  hasClaimedLogin: false,
+};
+
+let timer = {
+  duration: 25 * 60, // seconds
+  remaining: 25 * 60,
+  interval: null,
+  running: false,
+  paused: false,
+  sessionXP: 0,
+  sessionGold: 0,
+  wildernessActive: false,
+  graceUsed: false,
+};
+
+let graceTimer = null;
+let eventTimer = null;
+let currentTab = 'log';
+let isCustom = false;
+
+// =====================
+// STORAGE
+// =====================
+async function saveState() {
+  try {
+    await window.storage.set('qom-state', JSON.stringify(state));
+  } catch(e) {
+    // fallback silently
+  }
+}
+
+async function loadState() {
+  try {
+    const result = await window.storage.get('qom-state');
+    if (result && result.value) {
+      const saved = JSON.parse(result.value);
+      state = { ...state, ...saved };
+    }
+  } catch(e) {}
+}
+
+// =====================
+// INIT
+// =====================
+async function init() {
+  await loadState();
+  checkDailyReset();
+  checkLoginReward();
+  updateQuote();
+  updateHeaderStats();
+  updateCharacterSheet();
+  updateSkillSelect();
+  renderLog();
+  renderTab(currentTab);
+  updateSessionStats();
+  setInterval(updateClock, 60000);
+  updateClock();
+
+  // Notes counter
+  document.getElementById('notes-area').addEventListener('input', function() {
+    document.getElementById('notes-count').textContent = `${this.value.length}/200`;
+  });
+
+  // Visibility change for wilderness
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+  window.addEventListener('blur', handleWindowBlur);
+}
+
+function checkDailyReset() {
+  const today = new Date().toDateString();
+  if (state.todayDate !== today) {
+    // New day — update streak
+    if (state.lastStudyDate) {
+      const last = new Date(state.lastStudyDate);
+      const now = new Date();
+      const diff = Math.floor((now - last) / (1000*60*60*24));
+      if (diff === 1) {
+        state.streak++;
+      } else if (diff > 1) {
+        // Check streak shield
+        const shieldIdx = state.inventory.findIndex(i => i.buff === 'StreakShield');
+        if (shieldIdx >= 0) {
+          state.inventory.splice(shieldIdx, 1);
+          addLog('🛡️ Streak Shield activated! Streak preserved.', true);
+        } else {
+          state.streak = 0;
+        }
+      }
+    }
+    if (state.streak > state.bestStreak) state.bestStreak = state.streak;
+    state.todayDate = today;
+    state.todayXP = 0;
+    state.todayMinutes = 0;
+    state.hasClaimedLogin = false;
+    saveState();
+  }
+}
+
+function checkLoginReward() {
+  if (!state.hasClaimedLogin) {
+    const reward = 100;
+    state.gold += reward;
+    state.totalGoldEarned += reward;
+    state.hasClaimedLogin = true;
+    addLog('💎 Daily login reward claimed! +100 GP', true);
+    addLog('💎 Seasonal event: Banker\'s Hour — Daily login reward doubled!', true);
+    saveState();
+  }
+}
+
+function updateQuote() {
+  const q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+  document.getElementById('quote-banner').textContent = `${q[0]} ${q[1]}`;
+}
+
+function updateClock() {
+  const h = new Date().getHours();
+  const phase = h >= 6 && h < 12 ? '☀️ MORN' : h >= 12 && h < 18 ? '☀️ DAY' : h >= 18 && h < 21 ? '🌅 DUSK' : '🌙 NIGHT';
+  document.getElementById('time-pill').textContent = phase;
+}
+
+function updateHeaderStats() {
+  document.getElementById('gp-pill').textContent = `💎 ${state.gold} GP`;
+}
+
+function updateCharacterSheet() {
+  document.getElementById('char-name').textContent = state.charName;
+  const classEmoji = { Mage: '🧙', Warrior: '⚔️', Ranger: '🏹' };
+  const avatarEmoji = { Mage: '🧙', Warrior: '⚔️', Ranger: '🏹' };
+  document.getElementById('char-class').textContent = `${classEmoji[state.charClass] || '🧙'} ${state.charClass}`;
+  document.getElementById('avatar-img').textContent = avatarEmoji[state.charClass] || '🧙';
+  document.getElementById('cl-val').textContent = state.combatLevel;
+  document.getElementById('streak-val').textContent = state.streak;
+  document.getElementById('best-streak-val').textContent = state.bestStreak;
+
+  // Title
+  const titles = ['The Novice','The Apprentice','The Scholar','The Expert','The Master','The Grandmaster','The Legend'];
+  const titleIdx = Math.min(Math.floor(state.combatLevel / 5), titles.length - 1);
+  document.getElementById('char-title').textContent = titles[titleIdx];
+
+  // Total time
+  const h = Math.floor(state.totalMinutes / 60);
+  const m = state.totalMinutes % 60;
+  document.getElementById('total-time-val').textContent = `${h}h ${m}m`;
+
+  // Combat XP bar
+  const xpNeeded = state.combatLevel * 100;
+  const pct = Math.min((state.combatXP / xpNeeded) * 100, 100);
+  document.getElementById('cl-xp-bar').style.width = pct + '%';
+  document.getElementById('cl-xp-label').textContent = `${state.combatXP} / ${xpNeeded}`;
+
+  // Skills list
+  renderSkillsList();
+
+  // Buffs
+  renderBuffs();
+
+  // Inventory
+  renderInventory();
+
+  updateSessionStats();
+}
+
+function renderSkillsList() {
+  const list = document.getElementById('skills-list');
+  const noMsg = document.getElementById('no-skills-msg');
+  if (state.skills.length === 0) {
+    if (noMsg) noMsg.style.display = '';
+    list.innerHTML = '<div id="no-skills-msg" style="text-align:center;color:var(--text-dim);font-style:italic;font-size:12px;padding:16px 0">No skills yet.<br>Click + Manage to add your first skill.</div>';
+    return;
+  }
+  list.innerHTML = state.skills.map((sk, i) => {
+    const xpNeeded = (sk.level || 1) * 80;
+    const pct = Math.min(((sk.xp || 0) / xpNeeded) * 100, 100);
+    return `<div class="skill-item">
+      <div class="skill-item-header">
+        <span class="skill-item-name">${sk.name}</span>
+        <span class="skill-item-level">Lv ${sk.level || 1}</span>
+      </div>
+      <div class="skill-item-xp-track"><div class="skill-item-xp-fill" style="width:${pct}%"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim);margin-top:2px">
+        <span>${sk.xp || 0} XP</span><span>${sk.xp || 0}/${xpNeeded}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderBuffs() {
+  const container = document.getElementById('buffs-container');
+  const buffs = [];
+  if (state.inventory.some(i => i.buff === 'DoubleLoot')) buffs.push('📜 Double Loot (active)');
+  if (state.inventory.some(i => i.buff === 'FocusElixir')) buffs.push('⚗️ Focus Elixir (+20% XP)');
+  if (state.inventory.some(i => i.buff === 'CrystalClarity')) buffs.push('💎 Crystal of Clarity');
+  if (state.inventory.some(i => i.buff === 'RuneFortune')) buffs.push('🔮 Rune of Fortune');
+  if (buffs.length === 0) {
+    container.innerHTML = '<div class="buff-item" id="daily-buff" style="opacity:0.5">No active buffs</div>';
+  } else {
+    container.innerHTML = buffs.map(b => `<div class="buff-item">${b}</div>`).join('');
+  }
+}
+
+function renderInventory() {
+  const container = document.getElementById('inventory-container');
+  const items = state.inventory.filter(i => !['DoubleLoot','FocusElixir','CrystalClarity','RuneFortune','StreakShield'].includes(i.buff));
+  if (items.length === 0) {
+    container.innerHTML = '<div id="inv-empty" style="color:var(--text-dim);font-style:italic;font-size:12px">Empty</div>';
+  } else {
+    container.innerHTML = items.map(item => `<div style="font-size:12px;padding:4px 0;color:var(--text-main)">${item.emoji || '📦'} ${item.name}</div>`).join('');
+  }
+}
+
+function updateSkillSelect() {
+  const sel = document.getElementById('skill-select');
+  sel.innerHTML = state.skills.length === 0
+    ? '<option value="">— Add a Skill First —</option>'
+    : state.skills.map((sk, i) => `<option value="${i}">${sk.name} (Lv ${sk.level || 1})</option>`).join('');
+  document.getElementById('begin-btn').disabled = state.skills.length === 0;
+}
+
+function updateSessionStats() {
+  document.getElementById('time-today').textContent = state.todayMinutes < 60 ? `${state.todayMinutes}m` : `${Math.floor(state.todayMinutes/60)}h ${state.todayMinutes%60}m`;
+  document.getElementById('xp-today').textContent = state.todayXP;
+  document.getElementById('streak-display').textContent = state.streak;
+}
+
+// =====================
+// LOG
+// =====================
+let logEntries = [];
+
+function addLog(msg, highlight = false) {
+  const now = new Date();
+  const time = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+  logEntries.unshift({ time, msg, highlight });
+  if (currentTab === 'log') renderLog();
+}
+
+function renderLog() {
+  const content = document.getElementById('tab-content');
+  if (currentTab !== 'log') return;
+  const entries = logEntries.slice(0, 50).map(e =>
+    `<div class="log-entry ${e.highlight ? 'highlight' : ''}">
+      <span class="log-time">${e.time}</span>${e.msg}
+    </div>`
+  ).join('');
+  content.innerHTML = `<div id="log-content">
+    ${entries}
+    <div id="log-welcome">
+      <div style="font-size:24px;margin-bottom:8px">✕</div>
+      <h2>Welcome, Adventurer!</h2>
+      <p>Choose a Quest Type · Set a Duration · Press BEGIN QUEST</p>
+      <p style="margin-top:8px">Complete sessions to earn XP, level up skills, and collect loot.</p>
+    </div>
+  </div>`;
+}
+
+// =====================
+// TIMER
+// =====================
+function setDuration(minutes, btn) {
+  if (timer.running) return;
+  isCustom = false;
+  document.getElementById('custom-input-row').classList.add('hidden');
+  document.querySelectorAll('.dur-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  timer.duration = minutes * 60;
+  timer.remaining = timer.duration;
+  updateTimerDisplay();
+}
+
+function toggleCustom(btn) {
+  if (timer.running) return;
+  document.querySelectorAll('.dur-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const row = document.getElementById('custom-input-row');
+  row.classList.toggle('hidden');
+  isCustom = !row.classList.contains('hidden');
+}
+
+function applyCustomDuration() {
+  const val = parseInt(document.getElementById('custom-min-input').value);
+  if (!val || val < 1 || val > 480) return;
+  timer.duration = val * 60;
+  timer.remaining = timer.duration;
+  updateTimerDisplay();
+  document.getElementById('custom-input-row').classList.add('hidden');
+}
+
+function updateTimerDisplay() {
+  const m = Math.floor(timer.remaining / 60);
+  const s = timer.remaining % 60;
+  document.getElementById('timer-digits').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function beginQuest() {
+  const selIdx = parseInt(document.getElementById('skill-select').value);
+  if (isNaN(selIdx) || selIdx < 0 || state.skills.length === 0) {
+    alert('Please add a skill first!');
+    return;
+  }
+  state.selectedSkillIndex = selIdx;
+  timer.running = true;
+  timer.paused = false;
+  timer.sessionXP = 0;
+  timer.sessionGold = 0;
+  timer.wildernessActive = document.getElementById('wilderness-toggle').checked;
+  timer.graceUsed = false;
+
+  document.getElementById('timer-digits').className = 'running';
+  document.getElementById('timer-status').textContent = timer.wildernessActive ? '⚔️ WILDERNESS ACTIVE' : 'Quest In Progress';
+  document.getElementById('begin-btn').disabled = true;
+  document.getElementById('pause-btn').disabled = false;
+  document.getElementById('wilderness-toggle').disabled = true;
+
+  addLog(`⚔️ Quest started: ${state.skills[selIdx].name} (${Math.floor(timer.duration/60)} min)`, true);
+  if (timer.wildernessActive) addLog('💀 Wilderness mode active! Do not leave this tab!', true);
+
+  // Start random events
+  scheduleRandomEvent();
+
+  timer.interval = setInterval(() => {
+    if (!timer.paused) {
+      timer.remaining--;
+      updateTimerDisplay();
+      if (timer.remaining <= 0) {
+        completeQuest();
+      }
+    }
+  }, 1000);
+}
+
+function togglePause() {
+  if (!timer.running) return;
+  timer.paused = !timer.paused;
+  const btn = document.getElementById('pause-btn');
+  if (timer.paused) {
+    btn.textContent = '▶ Resume';
+    btn.classList.add('resume');
+    document.getElementById('timer-digits').className = 'paused';
+    document.getElementById('timer-status').textContent = 'Paused';
+    document.getElementById('begin-btn').textContent = '⚠ Abandon';
+    document.getElementById('begin-btn').disabled = false;
+    document.getElementById('begin-btn').onclick = abandonQuest;
+  } else {
+    btn.textContent = '⏸ Pause';
+    btn.classList.remove('resume');
+    document.getElementById('timer-digits').className = 'running';
+    document.getElementById('timer-status').textContent = timer.wildernessActive ? '⚔️ WILDERNESS ACTIVE' : 'Quest In Progress';
+    document.getElementById('begin-btn').textContent = '▶ Begin Quest';
+    document.getElementById('begin-btn').disabled = true;
+    document.getElementById('begin-btn').onclick = beginQuest;
+  }
+}
+
+function abandonQuest() {
+  if (!confirm('Abandon quest? All session XP and Gold will be lost.')) return;
+  clearTimers();
+  addLog('⚠️ Quest abandoned. No rewards granted.');
+  resetTimerUI();
+}
+
+function clearTimers() {
+  clearInterval(timer.interval);
+  clearInterval(eventTimer);
+  timer.running = false;
+  timer.paused = false;
+  timer.remaining = timer.duration;
+}
+
+function resetTimerUI() {
+  updateTimerDisplay();
+  document.getElementById('timer-digits').className = '';
+  document.getElementById('timer-status').textContent = 'Ready to Begin';
+  document.getElementById('begin-btn').textContent = '▶ Begin Quest';
+  document.getElementById('begin-btn').disabled = state.skills.length === 0;
+  document.getElementById('begin-btn').onclick = beginQuest;
+  document.getElementById('pause-btn').textContent = '⏸ Pause';
+  document.getElementById('pause-btn').classList.remove('resume');
+  document.getElementById('wilderness-toggle').disabled = false;
+  document.getElementById('event-zone').textContent = '';
+  document.getElementById('event-zone').className = '';
+}
+
+function completeQuest() {
+  clearInterval(timer.interval);
+  clearInterval(eventTimer);
+  timer.running = false;
+
+  const durationMin = Math.floor(timer.duration / 60);
+  const skill = state.skills[state.selectedSkillIndex];
+
+  // Calculate XP
+  const baseXP = durationMin * 2;
+  const classBonus = state.charClass === 'Mage' ? 1.2 : 1.0;
+  const comboBonus = 1 + Math.min(state.combo * 0.05, 0.5);
+  const buffBonus = state.inventory.some(i => i.buff === 'FocusElixir') ? 1.2 : 1.0;
+  const crystalBonus = state.inventory.some(i => i.buff === 'CrystalClarity') ? 1.0 : 1.0;
+  const wildBonus = (timer.wildernessActive) ? 1.25 : 1.0;
+  const xpEarned = Math.floor(baseXP * classBonus * comboBonus * buffBonus * wildBonus);
+
+  // Calculate Gold
+  const baseGold = durationMin * 3;
+  const goldClassBonus = state.charClass === 'Warrior' ? 1.2 : 1.0;
+  const doubleBonus = state.inventory.some(i => i.buff === 'DoubleLoot') ? 2.0 : 1.0;
+  const runeBonus = state.inventory.some(i => i.buff === 'RuneFortune') ? 2.0 : 1.0;
+  const wildGoldBonus = timer.wildernessActive ? 1.25 : 1.0;
+  const goldEarned = Math.floor(baseGold * goldClassBonus * doubleBonus * runeBonus * wildGoldBonus);
+
+  // Loot drop
+  let lootDropped = null;
+  const lootChance = durationMin >= 90 ? 0.6 : durationMin >= 50 ? 0.4 : 0.25;
+  if (Math.random() < lootChance) {
+    lootDropped = LOOT_TABLE[Math.floor(Math.random() * LOOT_TABLE.length)];
+    state.inventory.push({ ...lootDropped });
+  }
+
+  // Consume single-use buffs
+  ['FocusElixir', 'DoubleLoot', 'RuneFortune'].forEach(buffName => {
+    const idx = state.inventory.findIndex(i => i.buff === buffName);
+    if (idx >= 0) state.inventory.splice(idx, 1);
+  });
+
+  // Apply XP to skill
+  if (!skill.xp) skill.xp = 0;
+  if (!skill.level) skill.level = 1;
+  skill.xp += xpEarned;
+  const xpNeeded = skill.level * 80;
+  if (skill.xp >= xpNeeded) {
+    skill.xp -= xpNeeded;
+    skill.level++;
+    addLog(`⬆️ ${skill.name} leveled up! Now Level ${skill.level}!`, true);
+  }
+
+  // Apply to combat level
+  state.combatXP += Math.floor(xpEarned * 0.3);
+  const clXPNeeded = state.combatLevel * 100;
+  if (state.combatXP >= clXPNeeded) {
+    state.combatXP -= clXPNeeded;
+    state.combatLevel++;
+    addLog(`⬆️ Combat Level up! Now Level ${state.combatLevel}!`, true);
+  }
+
+  // Update state
+  state.gold += goldEarned;
+  state.totalXP += xpEarned;
+  state.totalGoldEarned += goldEarned;
+  state.totalSessions++;
+  state.totalMinutes += durationMin;
+  state.todayXP += xpEarned;
+  state.todayMinutes += durationMin;
+  state.combo++;
+  state.lastStudyDate = new Date().toDateString();
+
+  // Update streak
+  const today = new Date().toDateString();
+  if (state.todayDate !== today || state.streak === 0) {
+    if (state.lastStudyDate !== today) state.streak = 1;
+  }
+  if (state.streak > state.bestStreak) state.bestStreak = state.streak;
+
+  // Wilderness win
+  if (timer.wildernessActive) state.wildernessWins++;
+
+  // History
+  const notes = document.getElementById('notes-area').value;
+  state.history.unshift({
+    skill: skill.name,
+    date: new Date().toLocaleString('pt-BR'),
+    duration: durationMin,
+    xp: xpEarned,
+    gold: goldEarned,
+    notes: notes,
+    wilderness: timer.wildernessActive,
+  });
+  document.getElementById('notes-area').value = '';
+  document.getElementById('notes-count').textContent = '0/200';
+
+  // Check achievements
+  checkAchievements();
+
+  saveState();
+
+  // Show XP float
+  showXPFloat(xpEarned);
+
+  // Show reward modal
+  showRewardModal(skill, xpEarned, goldEarned, lootDropped, durationMin);
+
+  addLog(`✅ Quest complete: ${skill.name} | +${xpEarned} XP | +${goldEarned} GP`, true);
+
+  resetTimerUI();
+  updateCharacterSheet();
+  updateHeaderStats();
+  updateSkillSelect();
+  renderTab(currentTab);
+}
+
+function showXPFloat(xp) {
+  const el = document.createElement('div');
+  el.className = 'xp-float';
+  el.textContent = `+${xp} XP`;
+  el.style.left = '50%';
+  el.style.top = '40%';
+  el.style.transform = 'translateX(-50%)';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1600);
+}
+
+function showRewardModal(skill, xp, gold, loot, durationMin) {
+  const questName = durationMin >= 90 ? 'Epic Quest' : durationMin >= 50 ? 'Standard Quest' : 'Short Quest';
+  document.getElementById('reward-icon').textContent = durationMin >= 90 ? '🏆' : durationMin >= 50 ? '⚔️' : '✅';
+  document.getElementById('reward-title').textContent = questName + ' Complete!';
+  document.getElementById('reward-sub').textContent = `${skill.name} · ${durationMin} minutes`;
+  document.getElementById('reward-items').innerHTML = `
+    <div class="reward-line">⚡ +${xp} XP</div>
+    <div class="reward-line">💎 +${gold} GP</div>
+    <div class="reward-line">🔥 Combo: ${state.combo}x</div>
+    ${loot ? `<div class="reward-line" style="color:var(--purple-bright)">📦 Loot: ${loot.emoji} ${loot.name}</div>` : ''}
+  `;
+  document.getElementById('reward-modal').classList.remove('hidden');
+}
+
+// =====================
+// RANDOM EVENTS
+// =====================
+function scheduleRandomEvent() {
+  const delay = 30000 + Math.random() * 60000; // 30-90 seconds
+  eventTimer = setTimeout(triggerRandomEvent, delay);
+}
+
+function triggerRandomEvent() {
+  const events = [
+    { text: '⚡ Focus Surge! +1.5× XP for 30s', bonus: 'xp', duration: 30 },
+    { text: '💎 Gold Rush! Double Gold for 30s', bonus: 'gold', duration: 30 },
+    { text: '🔥 Combo Boost! +5 Combo points!', bonus: 'combo', duration: 0 },
+    { text: '📚 Scholar\'s Insight! +20 bonus XP', bonus: 'instant_xp', duration: 0 },
+    { text: '🌟 Rare Focus! 2× XP for 45s', bonus: 'xp2', duration: 45 },
+  ];
+  const ev = events[Math.floor(Math.random() * events.length)];
+  const zone = document.getElementById('event-zone');
+  zone.textContent = ev.text;
+  zone.className = 'active';
+  addLog(`✨ Event: ${ev.text}`, true);
+  if (ev.bonus === 'combo') state.combo += 5;
+  setTimeout(() => {
+    zone.textContent = '';
+    zone.className = '';
+    if (timer.running) scheduleRandomEvent();
+  }, ev.duration * 1000 + 3000);
+}
+
+// =====================
+// WILDERNESS
+// =====================
+function handleVisibilityChange() {
+  if (!timer.running || !timer.wildernessActive || timer.paused) return;
+  if (document.hidden) triggerWildernessAlert();
+}
+
+function handleWindowBlur() {
+  if (!timer.running || !timer.wildernessActive || timer.paused) return;
+  triggerWildernessAlert();
+}
+
+function triggerWildernessAlert() {
+  if (timer.graceUsed) {
+    // Instant death
+    killPlayer();
+    return;
+  }
+  timer.graceUsed = true;
+  let count = 3;
+  const overlay = document.getElementById('grace-overlay');
+  overlay.classList.remove('hidden');
+  document.getElementById('grace-count').textContent = count;
+  graceTimer = setInterval(() => {
+    count--;
+    document.getElementById('grace-count').textContent = count;
+    if (count <= 0) {
+      clearInterval(graceTimer);
+      overlay.classList.add('hidden');
+      if (document.hidden) killPlayer();
+    }
+  }, 1000);
+}
+
+function killPlayer() {
+  clearInterval(timer.interval);
+  clearInterval(eventTimer);
+  clearInterval(graceTimer);
+  document.getElementById('grace-overlay').classList.add('hidden');
+  timer.running = false;
+  document.getElementById('death-screen').classList.remove('hidden');
+  addLog('💀 Wilderness death! All session rewards lost.', true);
+  resetTimerUI();
+  updateCharacterSheet();
+}
+
+function respawn() {
+  document.getElementById('death-screen').classList.add('hidden');
+}
+
+// =====================
+// SKILLS MODAL
+// =====================
+function openManageSkills() {
+  renderExistingSkills();
+  document.getElementById('skills-modal').classList.remove('hidden');
+}
+
+function renderExistingSkills() {
+  const list = document.getElementById('existing-skills-list');
+  if (state.skills.length === 0) {
+    list.innerHTML = '<div style="color:var(--text-dim);font-style:italic;font-size:12px">No skills yet.</div>';
+    return;
+  }
+  list.innerHTML = state.skills.map((sk, i) => `
+    <div class="existing-skill-item">
+      <span class="existing-skill-name">${sk.name} (Lv ${sk.level || 1})</span>
+      <button class="delete-skill-btn" onclick="deleteSkill(${i})">Delete</button>
+    </div>
+  `).join('');
+}
+
+function addSkill() {
+  const name = document.getElementById('new-skill-name').value.trim();
+  if (!name) return;
+  if (state.skills.find(s => s.name.toLowerCase() === name.toLowerCase())) {
+    alert('Skill already exists!');
+    return;
+  }
+  state.skills.push({ name, level: 1, xp: 0 });
+  document.getElementById('new-skill-name').value = '';
+  saveState();
+  renderExistingSkills();
+  updateSkillSelect();
+  updateCharacterSheet();
+  addLog(`📚 New skill added: ${name}`, true);
+}
+
+function deleteSkill(idx) {
+  if (!confirm(`Delete skill "${state.skills[idx].name}"? All XP will be lost.`)) return;
+  state.skills.splice(idx, 1);
+  saveState();
+  renderExistingSkills();
+  updateSkillSelect();
+  updateCharacterSheet();
+}
+
+// =====================
+// TABS
+// =====================
+function switchTab(tab, btn) {
+  currentTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderTab(tab);
+}
+
+function renderTab(tab) {
+  const content = document.getElementById('tab-content');
+  switch(tab) {
+    case 'log': renderLog(); break;
+    case 'history': renderHistory(content); break;
+    case 'stats': renderStats(content); break;
+    case 'heatmap': renderHeatmap(content); break;
+    case 'achievements': renderAchievements(content); break;
+    case 'quests': renderQuests(content); break;
+    case 'shop': renderShop(content); break;
+    case 'guide': renderGuide(content); break;
+    default: content.innerHTML = `<div style="padding:20px;text-align:center;color:var(--text-dim)">Coming soon...</div>`;
+  }
+}
+
+function renderHistory(content) {
+  if (state.history.length === 0) {
+    content.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-dim);font-style:italic">No sessions yet. Begin your first quest!</div>';
+    return;
+  }
+  content.innerHTML = '<div style="padding:12px">' + state.history.slice(0,50).map(h => `
+    <div class="history-entry">
+      <div class="history-entry-header">
+        <span class="history-entry-skill">${h.skill}</span>
+        <span class="history-entry-date">${h.date}</span>
+      </div>
+      <div class="history-entry-stats">
+        <span>⏱ ${h.duration}m</span>
+        <span>⚡ +${h.xp} XP</span>
+        <span>💎 +${h.gold} GP</span>
+        ${h.wilderness ? '<span>💀 Wilderness</span>' : ''}
+      </div>
+      ${h.notes ? `<div class="history-entry-note">${h.notes}</div>` : ''}
+    </div>
+  `).join('') + '</div>';
+}
+
+function renderStats(content) {
+  const avgSession = state.totalSessions ? Math.floor(state.totalMinutes / state.totalSessions) : 0;
+  content.innerHTML = `<div class="stats-grid">
+    <div class="stat-box"><div class="stat-box-label">Total Sessions</div><div class="stat-box-value">${state.totalSessions}</div></div>
+    <div class="stat-box"><div class="stat-box-label">Total XP</div><div class="stat-box-value">${state.totalXP}</div></div>
+    <div class="stat-box"><div class="stat-box-label">Total Gold</div><div class="stat-box-value">${state.totalGoldEarned}</div></div>
+    <div class="stat-box"><div class="stat-box-label">Total Hours</div><div class="stat-box-value">${(state.totalMinutes/60).toFixed(1)}h</div></div>
+    <div class="stat-box"><div class="stat-box-label">Best Streak</div><div class="stat-box-value">${state.bestStreak}</div></div>
+    <div class="stat-box"><div class="stat-box-label">Avg Session</div><div class="stat-box-value">${avgSession}m</div></div>
+    <div class="stat-box"><div class="stat-box-label">Combat Level</div><div class="stat-box-value">${state.combatLevel}</div></div>
+    <div class="stat-box"><div class="stat-box-label">Combo</div><div class="stat-box-value">${state.combo}x</div></div>
+  </div>`;
+}
+
+function renderHeatmap(content) {
+  // Build last 90 days heatmap
+  const sessionsByDay = {};
+  state.history.forEach(h => {
+    const key = h.date ? h.date.split(',')[0] : '';
+    if (key) sessionsByDay[key] = (sessionsByDay[key] || 0) + 1;
+  });
+
+  const days = [];
+  for (let i = 89; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const key = d.toLocaleDateString('pt-BR');
+    const count = sessionsByDay[key] || 0;
+    const lvl = count === 0 ? '' : count === 1 ? 'lvl1' : count === 2 ? 'lvl2' : count <= 4 ? 'lvl3' : 'lvl4';
+    days.push(`<div class="heatmap-cell ${lvl}" title="${key}: ${count} session(s)"></div>`);
+  }
+
+  content.innerHTML = `<div id="heatmap-container">
+    <div class="heatmap-month-label">Last 90 Days</div>
+    <div class="heatmap-grid">${days.join('')}</div>
+    <div style="font-size:11px;color:var(--text-dim);margin-top:4px">Each cell = 1 day · Darker = more sessions</div>
+  </div>`;
+}
+
+function renderAchievements(content) {
+  content.innerHTML = '<div>' + ACHIEVEMENTS.map(a => {
+    const unlocked = state.achievements.includes(a.id);
+    return `<div class="achievement-item ${unlocked ? '' : 'locked'}">
+      <div class="achievement-icon">${a.icon}</div>
+      <div class="achievement-info">
+        <div class="achievement-name">${a.name}</div>
+        <div class="achievement-desc">${a.desc}</div>
+      </div>
+      ${unlocked ? '<div style="color:var(--gold-bright);font-size:18px">✓</div>' : ''}
+    </div>`;
+  }).join('') + '</div>';
+}
+
+function renderQuests(content) {
+  const dailyQuests = [
+    { name: 'Daily Devotion', desc: 'Complete 1 session today', progress: Math.min(state.history.filter(h => h.date && h.date.includes(new Date().toLocaleDateString('pt-BR'))).length, 1), total: 1 },
+    { name: 'Study Marathon', desc: 'Study for 50 minutes today', progress: Math.min(state.todayMinutes, 50), total: 50 },
+    { name: 'Gold Hunter', desc: 'Earn 100 GP today', progress: Math.min(state.todayXP * 1.5, 100), total: 100 },
+  ];
+  const weeklyQuests = [
+    { name: 'Persistent Scholar', desc: 'Complete 5 sessions this week', progress: Math.min(state.totalSessions, 5), total: 5 },
+    { name: 'Level Up!', desc: 'Gain 500 XP', progress: Math.min(state.todayXP, 500), total: 500 },
+  ];
+
+  content.innerHTML = '<div>' +
+    '<div style="padding:10px 12px;font-family:Cinzel,serif;font-size:10px;letter-spacing:2px;color:var(--gold-dim);text-transform:uppercase">Daily Quests</div>' +
+    dailyQuests.map(q => `
+      <div class="quest-item">
+        <div class="quest-item-name">${q.name}</div>
+        <div class="quest-item-desc">${q.desc}</div>
+        <div class="quest-progress-track"><div class="quest-progress-fill" style="width:${(q.progress/q.total)*100}%"></div></div>
+        <div class="quest-progress-label">${q.progress} / ${q.total}</div>
+      </div>
+    `).join('') +
+    '<div style="padding:10px 12px;font-family:Cinzel,serif;font-size:10px;letter-spacing:2px;color:var(--gold-dim);text-transform:uppercase;margin-top:8px">Weekly Quests</div>' +
+    weeklyQuests.map(q => `
+      <div class="quest-item">
+        <div class="quest-item-name">${q.name}</div>
+        <div class="quest-item-desc">${q.desc}</div>
+        <div class="quest-progress-track"><div class="quest-progress-fill" style="width:${(q.progress/q.total)*100}%"></div></div>
+        <div class="quest-progress-label">${q.progress} / ${q.total}</div>
+      </div>
+    `).join('') +
+    '</div>';
+}
+
+function renderShop(content) {
+  content.innerHTML = '<div><div style="padding:10px 12px;font-size:11px;color:var(--text-dim)">Spend your Gold on buffs and items!</div>' +
+    SHOP_ITEMS.map((item, i) => `
+      <div class="shop-item">
+        <div class="shop-item-info">
+          <div class="shop-item-name">${item.emoji} ${item.name}</div>
+          <div class="shop-item-desc">${item.desc}</div>
+        </div>
+        <button class="shop-buy-btn" onclick="buyItem(${i})" ${state.gold < item.price ? 'disabled' : ''}>
+          💎 ${item.price}
+        </button>
+      </div>
+    `).join('') + '</div>';
+}
+
+function buyItem(idx) {
+  const item = SHOP_ITEMS[idx];
+  if (state.gold < item.price) return;
+  state.gold -= item.price;
+  state.inventory.push({ name: item.name, emoji: item.emoji, buff: item.buff });
+  saveState();
+  updateHeaderStats();
+  updateCharacterSheet();
+  renderTab('shop');
+  addLog(`🛒 Purchased: ${item.name} (-${item.price} GP)`, true);
+}
+
+function renderGuide(content) {
+  content.innerHTML = `<div style="padding:14px">
+    <div style="font-family:Cinzel,serif;font-size:14px;color:var(--gold);margin-bottom:12px;letter-spacing:2px">GUIDE</div>
+    <div style="margin-bottom:14px">
+      <div style="font-family:Cinzel,serif;font-size:11px;color:var(--gold-dim);letter-spacing:1px;margin-bottom:6px">HOW TO PLAY</div>
+      <p style="font-size:12px;color:var(--text-dim);line-height:1.8">1. Add a <b style="color:var(--text-main)">Skill</b> via + Manage in the Character Sheet.<br>
+      2. Select it in the Quest Type dropdown.<br>
+      3. Choose a session duration (25/50/90 min).<br>
+      4. Press <b style="color:var(--text-main)">Begin Quest</b> and study!<br>
+      5. Earn <b style="color:var(--xp-color)">XP</b>, <b style="color:var(--gold)">Gold</b>, and <b style="color:var(--purple-bright)">Loot</b> on completion.</p>
+    </div>
+    <div style="margin-bottom:14px">
+      <div style="font-family:Cinzel,serif;font-size:11px;color:var(--gold-dim);letter-spacing:1px;margin-bottom:6px">DURATIONS</div>
+      <p style="font-size:12px;color:var(--text-dim);line-height:1.8">
+        <b style="color:var(--text-main)">25 min</b> — Short Quest: quick focused work<br>
+        <b style="color:var(--text-main)">50 min</b> — Standard Quest: balanced XP and loot<br>
+        <b style="color:var(--text-main)">90 min</b> — Epic Quest: max XP, rare loot chance
+      </p>
+    </div>
+    <div style="margin-bottom:14px">
+      <div style="font-family:Cinzel,serif;font-size:11px;color:var(--gold-dim);letter-spacing:1px;margin-bottom:6px">XP MULTIPLIERS</div>
+      <p style="font-size:12px;color:var(--text-dim);line-height:1.8">
+        Base XP × Event Multiplier × Combo × Class × Buff<br>
+        Mage: +20% XP · Warrior: +20% Gold · Ranger: +15% Streak<br>
+        Combo: +5% per consecutive session (max 1.5×)
+      </p>
+    </div>
+    <div style="margin-bottom:14px">
+      <div style="font-family:Cinzel,serif;font-size:11px;color:var(--red-bright);letter-spacing:1px;margin-bottom:6px">💀 WILDERNESS MODE</div>
+      <p style="font-size:12px;color:var(--text-dim);line-height:1.8">
+        High-stakes mode. Switch tabs = <b style="color:var(--red-bright)">DEATH</b> (3-second grace period).<br>
+        Survive = +25% XP and Gold bonus.<br>
+        Only 1 grace period per session.
+      </p>
+    </div>
+  </div>`;
+}
+
+// =====================
+// ACHIEVEMENTS
+// =====================
+function checkAchievements() {
+  ACHIEVEMENTS.forEach(a => {
+    if (!state.achievements.includes(a.id) && a.condition(state)) {
+      state.achievements.push(a.id);
+      addLog(`🏆 Achievement unlocked: ${a.name}!`, true);
+    }
+  });
+}
+
+// =====================
+// DUNGEON
+// =====================
+function openDungeon() {
+  const info = document.getElementById('dungeon-info');
+  info.innerHTML = `
+    <div style="padding:12px;font-size:12px;color:var(--text-dim);margin-bottom:8px">
+      Complete study sessions to advance through dungeon floors. Each floor requires a set number of sessions.
+    </div>
+    ${DUNGEON_FLOORS.map((floor, i) => {
+      const needed = floor.required;
+      const done = Math.min(state.totalSessions, needed * (i + 1)) - needed * i;
+      const pct = Math.min((done / needed) * 100, 100);
+      const isCurrent = state.dungeonProgress === i;
+      const isLocked = state.dungeonProgress < i;
+      return `<div class="dungeon-floor ${isCurrent ? 'current' : ''} ${isLocked ? 'locked' : ''}">
+        <div class="floor-info">
+          <div class="floor-name">${floor.name}</div>
+          <div class="floor-desc">${floor.desc}</div>
+          <div style="height:5px;background:rgba(0,0,0,0.4);border-radius:3px;overflow:hidden;margin:6px 0">
+            <div style="height:100%;background:linear-gradient(90deg,#4a6a20,#80aa40);width:${pct}%;border-radius:3px"></div>
+          </div>
+          <div class="floor-reward">Reward: ${floor.reward}</div>
+        </div>
+      </div>`;
+    }).join('')}
+  `;
+  document.getElementById('dungeon-modal').classList.remove('hidden');
+}
+
+// =====================
+// SETTINGS
+// =====================
+function openSettings() {
+  document.getElementById('char-name-input').value = state.charName;
+  document.querySelectorAll('.class-option').forEach(el => {
+    el.classList.toggle('selected', el.dataset.class === state.charClass);
+  });
+  document.getElementById('settings-modal').classList.remove('hidden');
+}
+
+function selectClass(el) {
+  document.querySelectorAll('.class-option').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function saveSettings() {
+  const name = document.getElementById('char-name-input').value.trim();
+  if (name) state.charName = name;
+  const selected = document.querySelector('.class-option.selected');
+  if (selected) state.charClass = selected.dataset.class;
+  saveState();
+  updateCharacterSheet();
+  closeModal('settings-modal');
+  addLog(`⚙️ Settings saved. Character: ${state.charName} (${state.charClass})`, false);
+}
+
+function resetData() {
+  if (!confirm('Reset ALL data? This cannot be undone!')) return;
+  if (!confirm('Are you absolutely sure? All progress will be lost.')) return;
+  state = {
+    gold: 0, totalXP: 0, totalGoldEarned: 0, totalSessions: 0, totalMinutes: 0,
+    combatLevel: 1, combatXP: 0, skills: [], selectedSkillIndex: -1, history: [],
+    inventory: [], activeBuff: null, streak: 0, bestStreak: 0, lastStudyDate: null,
+    wildernessWins: 0, combo: 0, dungeonProgress: 0, achievements: [],
+    charName: 'Adventurer', charClass: 'Mage', todayXP: 0, todayMinutes: 0,
+    todayDate: new Date().toDateString(), hasClaimedLogin: false,
+  };
+  logEntries = [];
+  saveState();
+  closeModal('settings-modal');
+  updateCharacterSheet();
+  updateHeaderStats();
+  updateSkillSelect();
+  renderLog();
+}
+
+function showHelp() {
+  renderGuide(document.getElementById('tab-content'));
+  currentTab = 'guide';
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    if (b.textContent.includes('Guide')) b.classList.add('active');
+  });
+}
+
+// =====================
+// MODAL UTILS
+// =====================
+function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+// Close modals on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.add('hidden');
+  });
+});
+
+// =====================
+// START
+// =====================
+init();
+</script>
+</body>
+</html>
